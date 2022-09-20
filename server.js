@@ -1,13 +1,21 @@
 // Dependencies
 const express = require('express');
+const mongoose = require('mongoose');
 
 // Init Express App
 const app = express();
 
 // Config App Settings
+require('dotenv').config();
 const { PORT = 4000, DATABASE_URL } = process.env;
 
 // Connect to MongoDB
+mongoose.connect(DATABASE_URL);
+mongoose.connection
+  .on('connected', () => console.log('Connected to MongoDB'))
+  .on('error', (error) =>
+    console.log('Problem with MongoDB: ' + error.message)
+  );
 
 // Middleware
 
