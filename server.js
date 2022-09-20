@@ -1,6 +1,7 @@
 // Dependencies
 const express = require('express');
 const mongoose = require('mongoose');
+const logger = require('morgan');
 
 // Init Express App
 const app = express();
@@ -17,7 +18,23 @@ mongoose.connection
     console.log('Problem with MongoDB: ' + error.message)
   );
 
+// Set Up Model
+const peopleSchema = new mongoose.Schema(
+  {
+    name: String,
+    image: String,
+    title: String,
+  },
+  { timestamps: true }
+);
+
+const People = mongoose.model('People', peopleSchema);
+
 // Middleware
+app.use(express.json()); // Creates req.body from json data
+// the other method we used (urlencoded({ extended: false })) turned
+// FORM data into req.body
+app.use(logger('dev'));
 
 // Routes - INDUCES
 app.get('/', (req, res) => {
